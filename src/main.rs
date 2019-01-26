@@ -29,17 +29,36 @@ fn main() {
     if input.len() <= 3 {
         output = [last_one, last_two].concat();
     } else if input.len() <= 6 {
-        output = [
-            middle_one, middle_two,
-            " thousand, ".to_string(),
-            last_one, last_two].concat();
+        if last_one == "" && last_two == "" {
+            output = [
+                middle_one, middle_two,
+                "thousand ".to_string()].concat();
+        } else {
+            output = [
+                middle_one, middle_two,
+                "thousand, ".to_string(),
+                last_one, last_two].concat();
+        }
     } else if input.len() <= 9 {
-        output = [
-            first_one, first_two,
-            " million, ".to_string(),
-            middle_one, middle_two,
-            " thousand, ".to_string(),
-            last_one, last_two].concat();
+        if middle_one == "" && middle_two == "" {
+            output = [
+                first_one, first_two,
+                "million ".to_string(),
+                last_one, last_two].concat();
+        } else if last_one == "" && last_two == "" {
+            output = [
+                first_one, first_two,
+                "million ".to_string(),
+                middle_one, middle_two,
+                "thousand ".to_string()].concat();
+        } else {
+            output = [
+                first_one, first_two,
+                "million, ".to_string(),
+                middle_one, middle_two,
+                "thousand, ".to_string(),
+                last_one, last_two].concat();
+        }
     } else {
         output = String::from("too large!")
     }
@@ -76,6 +95,10 @@ fn second_two_digits(mut second_two_storage: String, number: u32) -> String {
         let second = ones(number % 10);
         second_two_storage = [first, second].concat().trim().to_string();
     }
+    if second_two_storage == "" {
+        return second_two_storage;
+    }
+    second_two_storage.push_str(" ");
     second_two_storage
 }
 
